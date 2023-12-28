@@ -2,8 +2,11 @@ package com.example
 
 import java.security.MessageDigest
 
-fun calculateSHA1(input: String): String {
-    val digest = MessageDigest.getInstance("SHA-1")
+
+const val HASH_ALGO = "SHA-1"
+
+fun calculateHash(input: String): String {
+    val digest = MessageDigest.getInstance(HASH_ALGO)
     val hashBytes = digest.digest(input.toByteArray())
     return hashBytes.joinToString("") { "%02x".format(it) }
 }

@@ -10,7 +10,7 @@ class RepoLogicTest {
     fun `commit creation`() {
         val repo = RepoLogic()
         val blob = Blob("Hello world")
-        val tree = Tree(listOf(TreeNode("file1.txt", blob.sha1)))
+        val tree = Tree(listOf(TreeNode("file1.txt", blob.hash)))
         repo.createCommit(tree, "Jonny boy", "Initial commit")
 
         val allCommits = repo.listCommits()
@@ -25,7 +25,7 @@ class RepoLogicTest {
         val repo = RepoLogic()
         val blob1 = Blob("Hello world")
         val blob2 = Blob("simple blob")
-        val tree = Tree(listOf(TreeNode("file1.txt", blob1.sha1), TreeNode("file2.txt", blob2.sha1)))
+        val tree = Tree(listOf(TreeNode("file1.txt", blob1.hash), TreeNode("file2.txt", blob2.hash)))
         repo.createCommit(tree, "Jonny boy", "Initial commit")
 
         val allCommits = repo.listCommits()
@@ -40,7 +40,7 @@ class RepoLogicTest {
         val repo = RepoLogic()
         val blob1 = Blob("Hello world!")
         val blob2 = Blob("simple blob.")
-        val tree = Tree(listOf(TreeNode("file1.txt", blob1.sha1), TreeNode("file2.txt", blob2.sha1)))
+        val tree = Tree(listOf(TreeNode("file1.txt", blob1.hash), TreeNode("file2.txt", blob2.hash)))
         repo.createCommit(tree, "Jonny boy", "Initial commit")
         val searchResult = repo.searchCommits("Jonny boy")
 

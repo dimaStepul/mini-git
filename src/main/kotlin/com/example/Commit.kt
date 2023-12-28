@@ -7,5 +7,5 @@ data class Commit(
     val author: String,
     val message: String,
     val commitTime: Date = Date(),
-    val sha1: String = calculateSHA1(tree.sha1 + author + message + commitTime)
+    val hash: String = calculateHash(tree.sha1 + author + message + commitTime)
 )

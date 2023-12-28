@@ -11,7 +11,7 @@ class RepoLogic {
     fun listCommits(): List<Commit> = commits.toList()
 
     fun searchCommits(query: String): List<Commit> =
-        commits.filter { it.sha1.contains(query) || it.author.contains(query) || it.message.contains(query) }
+        commits.filter { it.hash.contains(query) || it.author.contains(query) || it.message.contains(query) }
 
 }
 
