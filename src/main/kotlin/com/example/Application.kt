@@ -1,69 +1,71 @@
 import com.example.*
 
-
-fun createSampleTree(factory: TreeFactory): Tree {
-    val node1 = TreeNode("file1.txt", calculateHash("hash1"))
-    val node2 = TreeNode("file2.txt", calculateHash("hash2"))
-    val node3 = TreeNode("file3.txt", calculateHash("hash3"))
-
-    return factory.createTree(listOf(node1, node2, node3))
-}
-
-
 fun main() {
-    val jetRepo = RepoLogic()
+    val consoleOutput = ConsoleOutput()
+    val jetRepo = RepoLogic(ConsoleOutput())
 
-    println("Welcome to the Jet Console App!")
-    val treeFactory = TreeFactory()
-    val tree = createSampleTree(treeFactory)
+    jetRepo.createTree("master")
 
     while (true) {
-        print("Enter command (jet list, jet commit, jet search, exit): ")
+        print("Enter command (jet list, jet commit, jet search, jet branch, jet switch, jet checkout, exit): ")
         val command = readlnOrNull()?.trim() ?: ""
 
         when (command) {
             "jet list" -> {
-                val commits = jetRepo.listCommits()
-                if (commits.isEmpty()) {
-                    println("No commits found.")
-                } else {
-                    println("Commits:")
-                    commits.forEachIndexed { index, commit ->
-                        println("$index: ${commit.author} - ${commit.message} - ${commit.commitTime}")
-                    }
-                }
+                jetRepo.listCommits()
             }
             "jet commit" -> {
                 print("Enter author: ")
-                val author = readLine()?.trim() ?: ""
+                val author = readlnOrNull()?.trim() ?: ""
                 print("Enter commit message: ")
-                val message = readLine()?.trim() ?: ""
-                jetRepo.createCommit(tree, author, message)
+                val message = readlnOrNull()?.trim() ?: ""
+                val tree = jetRepo.currentTree
+                if (tree != null) {
+                    jetRepo.createCommit(tree, author, message)
+                } else {
+                    println("Please, create branch")
+                }
                 println("Commit created success")
             }
             "jet search" -> {
                 print("Enter commit hash or metadata (author/message): ")
-                val input = readLine()?.trim() ?: ""
+                val input = readlnOrNull()?.trim() ?: ""
 
                 val commits = jetRepo.searchCommits(input)
 
                 if (commits.isNotEmpty()) {
                     commits.forEach { commit ->
                         println("Commit found:")
-                        println("Author: ${commit.author}")
-                        println("Message: ${commit.message}")
-                        println("Commit Time: ${commit.commitTime}")
+                        consoleOutput.printCommit(commit)
                     }
                 } else {
                     println("Commit not found")
                 }
             }
+            "jet branch" -> {
+                val currentBranch = jetRepo.currentTree
+                if (currentBranch != null) {
+                    consoleOutput.printCurrentTree(currentBranch.sha1)
+                } else {
+                    println("No current branch selected.")
+                }
+            }
+            "jet switch" -> {
+                print("Enter branch name to switch to: ")
+                val branchName = readlnOrNull()?.trim() ?: ""
+                jetRepo.switchTree(branchName)
+            }
             "exit" -> {
-                println("Exiting")
+                consoleOutput.printExiting()
                 return
             }
+            "jet checkout" -> {
+                print("Enter branch name to checkout: ")
+                val branchName = readlnOrNull()?.trim() ?: ""
+                jetRepo.checkoutTree(branchName)
+            }
             else -> {
-                println("Invalid command. Please enter a valid command")
+                consoleOutput.printInvalidCommand()
             }
         }
     }

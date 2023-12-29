@@ -8,12 +8,14 @@ class RepoLogicTest {
 
     @Test
     fun `commit creation`() {
-        val repo = RepoLogic()
+        val output = ConsoleOutput()
+        val repo = RepoLogic(output)
+
         val blob = Blob("Hello world")
-        val tree = Tree(listOf(TreeNode("file1.txt", blob.hash)))
+        val tree = Tree(listOf(TreeNode(blob.data)))
         repo.createCommit(tree, "Jonny boy", "Initial commit")
 
-        val allCommits = repo.listCommits()
+        val allCommits = repo.commitsToList()
 
         assertEquals(1, allCommits.size)
         assertEquals("Jonny boy", allCommits[0].author)
@@ -22,13 +24,14 @@ class RepoLogicTest {
 
     @Test
     fun `list all commits`() {
-        val repo = RepoLogic()
+        val output = ConsoleOutput()
+        val repo = RepoLogic(output)
         val blob1 = Blob("Hello world")
         val blob2 = Blob("simple blob")
-        val tree = Tree(listOf(TreeNode("file1.txt", blob1.hash), TreeNode("file2.txt", blob2.hash)))
+        val tree = Tree(listOf(TreeNode(blob1.data), TreeNode(blob2.data)))
         repo.createCommit(tree, "Jonny boy", "Initial commit")
 
-        val allCommits = repo.listCommits()
+        val allCommits = repo.commitsToList()
 
         assertEquals(1, allCommits.size)
         assertEquals("Jonny boy", allCommits[0].author)
@@ -37,10 +40,11 @@ class RepoLogicTest {
 
     @Test
     fun `searching in commits`() {
-        val repo = RepoLogic()
+        val output = ConsoleOutput()
+        val repo = RepoLogic(output)
         val blob1 = Blob("Hello world!")
         val blob2 = Blob("simple blob.")
-        val tree = Tree(listOf(TreeNode("file1.txt", blob1.hash), TreeNode("file2.txt", blob2.hash)))
+        val tree = Tree(listOf(TreeNode(blob1.data), TreeNode(blob2.data)))
         repo.createCommit(tree, "Jonny boy", "Initial commit")
         val searchResult = repo.searchCommits("Jonny boy")
 
