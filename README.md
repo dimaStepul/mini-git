@@ -8,7 +8,7 @@ The library I implemented  able to:
 ### how to run the docker container
 ```bash
 docker build -t jet-git .
-docker run   --name jet-git-container jet-git
+docker run  -it --name jet-git-container jet-git
 ```
 Then enter  the required command
 ### what to do next
