@@ -2,7 +2,7 @@ import com.example.*
 
 fun main() {
     val consoleOutput = ConsoleOutput()
-    val jetRepo = RepoLogic(ConsoleOutput())
+    val jetRepo = RepoImpl(ConsoleOutput())
 
     jetRepo.createTree("master")
 

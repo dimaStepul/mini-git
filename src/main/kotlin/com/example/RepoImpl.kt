@@ -1,6 +1,6 @@
 package com.example
 
-class RepoLogic(private val output: ConsoleOutput) {
+class RepoImpl(private val output: ConsoleOutput) : Repo {
     private val commits: MutableList<Commit> = mutableListOf()
 
     private val trees: MutableMap<String, Tree> = mutableMapOf()
@@ -8,21 +8,21 @@ class RepoLogic(private val output: ConsoleOutput) {
         private set
 
 
-    fun createCommit(tree: Tree, author: String, message: String) {
+    override fun createCommit(tree: Tree, author: String, message: String) {
         commits.add(Commit(tree, author, message))
     }
 
     fun commitsToList() = commits.toList()
-    fun listCommits() {
+    override fun listCommits() {
         commits.forEachIndexed { _, commit ->
             output.printCommit(commit)
         }
     }
 
-    fun searchCommits(query: String): List<Commit> =
+   override fun searchCommits(query: String): List<Commit> =
         commits.filter { it.hash.contains(query) || it.author.contains(query) || it.message.contains(query) }
 
-    fun createTree(name: String = "") {
+    override  fun createTree(name: String) {
         if (trees.containsKey(name)) {
             output.printTreeAlreadyExists(name)
         } else {
@@ -34,7 +34,7 @@ class RepoLogic(private val output: ConsoleOutput) {
     }
 
 
-    fun switchTree(name: String) {
+    override  fun switchTree(name: String) {
         if (trees.containsKey(name)) {
             currentTree = trees[name]
             output.printTreeSwitched(name)
@@ -43,7 +43,7 @@ class RepoLogic(private val output: ConsoleOutput) {
         }
     }
 
-    fun checkoutTree(treeName: String) {
+    override  fun checkoutTree(treeName: String) {
         createTree(treeName)
         currentTree = trees[treeName]
     }

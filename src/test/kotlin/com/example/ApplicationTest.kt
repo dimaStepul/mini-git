@@ -3,13 +3,13 @@ package com.example
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class RepoLogicTest {
+class RepoImplTest {
 
 
     @Test
     fun `commit creation`() {
         val output = ConsoleOutput()
-        val repo = RepoLogic(output)
+        val repo = RepoImpl(output)
 
         val blob = Blob("Hello world")
         val tree = Tree(listOf(TreeNode(blob.data)))
@@ -25,7 +25,7 @@ class RepoLogicTest {
     @Test
     fun `list all commits`() {
         val output = ConsoleOutput()
-        val repo = RepoLogic(output)
+        val repo = RepoImpl(output)
         val blob1 = Blob("Hello world")
         val blob2 = Blob("simple blob")
         val tree = Tree(listOf(TreeNode(blob1.data), TreeNode(blob2.data)))
@@ -41,7 +41,7 @@ class RepoLogicTest {
     @Test
     fun `searching in commits`() {
         val output = ConsoleOutput()
-        val repo = RepoLogic(output)
+        val repo = RepoImpl(output)
         val blob1 = Blob("Hello world!")
         val blob2 = Blob("simple blob.")
         val tree = Tree(listOf(TreeNode(blob1.data), TreeNode(blob2.data)))
