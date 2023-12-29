@@ -9,9 +9,9 @@ COPY --chown=gradle:gradle . /home/gradle/src
 USER root
 RUN chown -R gradle /home/gradle/src
 
-RUN gradle build --no-daemon || return 0
+RUN gradle buildFatJar --no-daemon || return 0
 COPY . .
-RUN gradle clean build
+RUN gradle clean buildFatJar
 WORKDIR /app
 
 #application build
